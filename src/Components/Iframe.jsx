@@ -29,8 +29,7 @@ export default function Iframe() {
     const pages = [{ id: 1, name: 'התחבר / הירשם', path: '/SignIn' },
     { id: 2, name: 'דף הבית', path: '/HomePage' },
     { id: 3, name: 'קצת עלינו', path: '/About' },
-    { id: 4, name: 'פוסטים', path: '' },
-    {id:5, name:'גרף',path:'Graph'}];
+    { id: 4, name: 'פוסטים', path: '' }];
 
     const [anchorElNav, setAnchorElNav] = useState(null);
 
