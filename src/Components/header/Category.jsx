@@ -21,22 +21,14 @@ export default function Category() {
   const categoryId = searchId.get('id');
 
   const sharings = useSelector((state) => state.sharings.sharingsList);
-  console.log("sharings",sharings)
-
-  // const [sharingsByCategory, setSharingsByCategory] = useState([]);
-
+  console.log("sharings", sharings)
 
   const categories = useSelector((state) => state.categories.categoriesList);
-   console.log("categories",categories)
+  console.log("categories", categories)
   const categoryById = categories && categoryId ? categories.find(category => category.id === parseInt(categoryId)) : {};
 
-  // useEffect(() => {
-  //   if (sharings && categoryId) {
   const sharingsByCategory = sharings.filter(sharing => sharing.category.id === parseInt(categoryId));
-  console.log("sharingsByCategory",sharingsByCategory)
-  //     setSharingsByCategory(filtered);
-  //   }
-  // }, [sharings]);
+  console.log("sharingsByCategory", sharingsByCategory)
 
   // מחזירה את כל הקטגוריות
   useEffect(() => {

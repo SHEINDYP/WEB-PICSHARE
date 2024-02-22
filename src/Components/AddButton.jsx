@@ -42,7 +42,7 @@ export default function AddButton() {
             <StyledFab color="secondary" aria-label="add" title='פוסט חדש'
                 onClick={u.id != null ? () => navigate('/AddNewPost') : go}
                 sx={{
-                    backgroundColor: 'black', 
+                    backgroundColor: 'black',
                     '&:hover': { backgroundColor: 'black', opacity: '0.8' },
                     '&:active': { backgroundColor: '#9400D3' }, marginTop: '90vh',
                     marginLeft: '5vw', position: 'fixed', zIndex: 100

@@ -28,7 +28,7 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const [showNewCard, setShowNewCard] = useState(false);
-  const [showNewGraph,setShowNewGraph]=useState(false)
+  const [showNewGraph, setShowNewGraph] = useState(false)
 
   const handleShowNewCard = () => {
     setShowNewCard(prevState => !prevState); // Toggle the state value
@@ -42,18 +42,18 @@ export default function Profile() {
   console.log("sharings", sharings)
 
   const [sharingsByUser, setSharingsByUser] = useState([]);
-  const [counts, setCounts]=useState([])
+  const [counts, setCounts] = useState([])
 
- const showGraph=()=>{
+  const showGraph = () => {
     setCounts(currentUser.counts)
-    setShowNewGraph(prevState=>!prevState)
- }
-
- useEffect(() => {
-  if (showNewGraph) {
-    setCounts(currentUser.counts);
+    setShowNewGraph(prevState => !prevState)
   }
-}, [showNewGraph, currentUser.counts]);
+
+  useEffect(() => {
+    if (showNewGraph) {
+      setCounts(currentUser.counts);
+    }
+  }, [showNewGraph, currentUser.counts]);
 
   useEffect(() => {
     if (sharings && currentUser) {
@@ -61,37 +61,6 @@ export default function Profile() {
       setSharingsByUser(filtered);
     }
   }, [sharings]);
-
-
-  const deleteProfile = async (userId) => {
-    try {
-      await axios.delete(`http://localhost:8585/api/user/deleteUser/${userId}`);
-      dispatch(deleteUser());
-    } catch (error) {
-      console.log('Error delete user:', error);
-    }
-  };
-
-  const isSureToDelete = () => {
-    swal({
-      title: "החשבון שלך ימחק",
-      buttons: {
-        login: {
-          text: "מחק",
-          value: "login",
-        },
-        cancel: "ביטול",
-      },
-    })
-      .then((value) => {
-        switch (value) {
-          case "login":
-            deleteProfile(currentUser.id);
-            () => dispatch(logOutUser());
-          navigate('/HomePage');  
-        }
-      });
-  }
 
   const notConnected = () => {
     swal({
@@ -191,7 +160,7 @@ export default function Profile() {
 
 
         {/* מחיקת החשבון */}
-        <Button variant="outlined"
+        {/* <Button variant="outlined"
           sx={{
             color: '#9400D3', borderColor: '#9400D3',
             '&:active': {
@@ -203,7 +172,7 @@ export default function Profile() {
               borderColor: 'white',
             },
           }}
-          onClick={currentUser.id != null ? isSureToDelete : notConnected}>מחק חשבון</Button>
+          onClick={currentUser.id != null ? isSureToDelete : notConnected}>מחק חשבון</Button> */}
       </Stack >
 
       <Stack spacing={2} direction="column"
@@ -227,7 +196,7 @@ export default function Profile() {
           onClick={currentUser.id != null ? handleShowNewCard : notConnected}>הפוסטים שלי</Button>
 
         {showNewCard && <NewCard sharings={sharingsByUser} type={1} />}
-     
+
         <Button variant="outlined"
           sx={{
             color: '#9400D3', borderColor: '#9400D3',
@@ -242,7 +211,7 @@ export default function Profile() {
             },
           }}
           onClick={currentUser.id != null ? showGraph : notConnected}>גרף צופים</Button>
-           {showNewGraph && <Graph counts={counts}/>}
+        {showNewGraph && <Graph counts={counts} />}
       </Stack>
 
     </>

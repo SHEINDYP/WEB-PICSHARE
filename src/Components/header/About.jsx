@@ -1,20 +1,11 @@
-import {Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import React from 'react';
 import './About.css';
 
 export default function About() {
-  const deletePost = async (sharingId) => {
-    try {
-        const response = await axios.delete(`http://localhost:8585/api/sharings/delete/${sharingId}`);
-        dispatch(deleteSharing(sharingId));
-    } catch (error) {
-        console.log('Error delete sharing:', error);
-    }
-};
 
   return (
     <>
-    <button onClick={()=>deletePost(6)}>del</button>
       <Typography variant='h4' className='h1A'>קצת עלינו</Typography>
       <div className='divA'>
         <img className='imgA' src="src/pic/bckCamera.jpg"></img>

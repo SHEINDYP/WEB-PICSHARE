@@ -24,13 +24,11 @@ const commentReducer = (state = initialState, action) => {
       return {
         ...state,
         commentsList: [...state.commentsList, action.payload],
-        // comment: action.payload,
       };
 
     case DELETE_COMMENT:
       return {
         ...state,
-        // commentsList: state.commentsList.filter(comment => comment.id !== action.payload),
         commentId: action.payload,
       };
 

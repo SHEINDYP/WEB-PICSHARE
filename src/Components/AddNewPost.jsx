@@ -15,8 +15,7 @@ import AddContent from '../Components/POST/AddContent'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSharing } from '../Redux/Actions/sharingActions';
-// import { deleteSharing } from '../Redux/Actions/sharingActions'
-// import { format } from 'date-fns';//date
+
 import { useNavigate } from 'react-router-dom';
 
 
@@ -48,184 +47,170 @@ export default function AddNewPost() {
   ];
 
   const addPost = () => {
-    if(myCategory!='' && myImg!=''){
-    
-    // get the selected file from the input
-    const file = myImg;
-    // create a new FormData object
-    const formData = new FormData();
+    if (myCategory != '' && myImg != '') {
 
-    // append the file to the FormData object
-    formData.append("image", file);
+      // get the selected file from the input
+      const file = myImg;
+      // create a new FormData object
+      const formData = new FormData();
 
-    // append additional fields (object) to the FormData object
-    console.log(myContent)
-    const objectToSend = {
-      "id": 0,
-      "title": myContent.title,
-      "description": myContent.content,
-      "score": 0,
-      "user":{
-        "id": u.id,
-      },
-      "category": {
-        "id": myCategory,
+      // append the file to the FormData object
+      formData.append("image", file);
 
-      },
-   
-     
-    };
-
-    // Convert the object to a JSON string and append it to FormData
-    formData.append("sharing", new Blob([JSON.stringify(objectToSend)], {type: "application/json"}))
-
-    // make a POST request to the File Upload API with the FormData object and Rapid API headers
-    axios
-      .post("http://localhost:8585/api/sharings/uploadSharing", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "x-rapidapi-host": "file-upload8.p.rapidapi.com",
-          "x-rapidapi-key": "your-rapidapi-key-here",
+      // append additional fields (object) to the FormData object
+      console.log(myContent)
+      const objectToSend = {
+        "id": 0,
+        "title": myContent.title,
+        "description": myContent.content,
+        "score": 0,
+        "user": {
+          "id": u.id,
         },
-      })
-      .then((response) => {
-        dispatch(addSharing(response.data));
-        // handle the response
-        console.log(response);
-        added()
-      })
-      .catch((error) => {
-        // handle errors
-        console.log('Error add sharing:', error);
-      });
-  }
-   else{
-    Swal.fire({
-      title: "חובה לבחור קטגוריה ולעלות תמונה",
-      showClass: {
-        popup: `
+        "category": {
+          "id": myCategory,
+
+        },
+
+
+      };
+
+      // Convert the object to a JSON string and append it to FormData
+      formData.append("sharing", new Blob([JSON.stringify(objectToSend)], { type: "application/json" }))
+
+      // make a POST request to the File Upload API with the FormData object and Rapid API headers
+      axios
+        .post("http://localhost:8585/api/sharings/uploadSharing", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "x-rapidapi-host": "file-upload8.p.rapidapi.com",
+            "x-rapidapi-key": "your-rapidapi-key-here",
+          },
+        })
+        .then((response) => {
+          dispatch(addSharing(response.data));
+          // handle the response
+          console.log(response);
+          added()
+        })
+        .catch((error) => {
+          // handle errors
+          console.log('Error add sharing:', error);
+        });
+    }
+    else {
+      Swal.fire({
+        title: "חובה לבחור קטגוריה ולעלות תמונה",
+        showClass: {
+          popup: `
           animate__animated
           animate__fadeInUp
           animate__faster
         `
-      },
-      hideClass: {
-        popup: `
+        },
+        hideClass: {
+          popup: `
           animate__animated
           animate__fadeOutDown
           animate__faster
         `
-      }
-    });
-    // alert("חסר נתונים")
-   }};
+        }
+      });
+      // alert("חסר נתונים")
+    }
+  };
 
-const added = () => {
-  swal({
-    title: "נוסף בהצלחה!",
-    // text: "!ברוך הבא",
-    icon: "success",
-    buttons: {
-      confirm: {
-        text: "אוקי",
-        value: true,
-        visible: true,
-        className: "custom-btn-class",
-        closeModal: true,
+  const added = () => {
+    swal({
+      title: "נוסף בהצלחה!",
+      // text: "!ברוך הבא",
+      icon: "success",
+      buttons: {
+        confirm: {
+          text: "אוקי",
+          value: true,
+          visible: true,
+          className: "custom-btn-class",
+          closeModal: true,
+        },
       },
-    },
-  })
-    .then((value) => {
-      if (value) {
-        nav(`/Category?id=${myCategory}`) // Navigate after user acknowledges the success message
-      }
-    });
-}
-
-// const deletePost = async (id) => {
-//   console.log(id)
-//   try {
-//    const resp = await axios.delete(`http://localhost:8585/api/sharings/delete/${id}`)
-//    console.log(resp)
-//     dispatch(deleteSharing(id));
-//   } catch (error) {
-//     console.log('Error delete sharing:', error);
-//   }
-// };
+    })
+      .then((value) => {
+        if (value) {
+          nav(`/Category?id=${myCategory}`) // Navigate after user acknowledges the success message
+        }
+      });
+  }
 
 
-const handleNext = () => {
-  setActiveStep((prevActiveStep) => prevActiveStep + 1);
-};
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
 
-const handleBack = () => {
-  setActiveStep((prevActiveStep) => prevActiveStep - 1);
-};
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
-const handleReset = () => {
-  setActiveStep(0);
-};
+  const handleReset = () => {
+    setActiveStep(0);
+  };
 
-return (
-  <>
-    <Box sx={{ maxWidth: 400, marginTop: '8%', direction: ' rtl', marginBottom: '5%',marginLeft:'40vw' }}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {/* // sx={{direction:'rtl',color:'yellow'}}//תוכן הצעד */}
-        {steps.map((step, index) => (
-          <Step key={step.label} >
-            <StepLabel sx={{ color: 'green', marginRight: '0', }}
-              optional={
-                index === 2 ? (
-                  <Typography variant="caption">Last step</Typography>
-                ) : null
-              }
-            >
-              {step.label}
-            </StepLabel>
-            <StepContent sx={{ borderLeft: 'none', borderRight: '1px solid plum', marginRight: '5%' }}>
-              <Typography >{step.description}</Typography>
-              {console.log('myCategory', myCategory)}
-              {console.log('myContent', myContent)}
-              {console.log('myImg', myImg)}
+  return (
+    <>
+      <Box sx={{ maxWidth: 400, marginTop: '8%', direction: ' rtl', marginBottom: '5%', marginLeft: '40vw' }}>
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {/* // sx={{direction:'rtl',color:'yellow'}}//תוכן הצעד */}
+          {steps.map((step, index) => (
+            <Step key={step.label} >
+              <StepLabel sx={{ color: 'green', marginRight: '0', }}
+                optional={
+                  index === 2 ? (
+                    <Typography variant="caption">Last step</Typography>
+                  ) : null
+                }
+              >
+                {step.label}
+              </StepLabel>
+              <StepContent sx={{ borderLeft: 'none', borderRight: '1px solid plum', marginRight: '5%' }}>
+                <Typography >{step.description}</Typography>
+                {console.log('myCategory', myCategory)}
+                {console.log('myContent', myContent)}
+                {console.log('myImg', myImg)}
 
-              <Box sx={{ mb: 2 }}>
-                <Button
-                  variant="contained"
-                  // onClick={handleNext}
-                  onClick={index === steps.length - 1 ? addPost : handleNext}
-                  sx={{ mt: 1, mr: 1, color: 'yellow' }}
-                >
-                  {index === steps.length - 1 ? 'הוסף' : 'המשך'}
-                </Button>
+                <Box sx={{ mb: 2 }}>
+                  <Button
+                    variant="contained"
+                    // onClick={handleNext}
+                    onClick={index === steps.length - 1 ? addPost : handleNext}
+                    sx={{ mt: 1, mr: 1, color: 'yellow' }}
+                  >
+                    {index === steps.length - 1 ? 'הוסף' : 'המשך'}
+                  </Button>
 
-                <Button
-                  disabled={index === 0}
-                  onClick={handleBack}
-                  sx={{ mt: 1, mr: 1 }}
-                >
+                  <Button
+                    disabled={index === 0}
+                    onClick={handleBack}
+                    sx={{ mt: 1, mr: 1 }}
+                  >
 
-                  Back
-                </Button>
+                    Back
+                  </Button>
 
-              </Box>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3, color: 'yellow' }}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            Reset
-          </Button>
-        </Paper>
-      )}
-    </Box>
+                </Box>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length && (
+          <Paper square elevation={0} sx={{ p: 3, color: 'yellow' }}>
+            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+              Reset
+            </Button>
+          </Paper>
+        )}
+      </Box>
 
-
-    {/* <button onClick={()=>addPost()}>adddddd</button> */}
-    {/* <button onClick={()=>deletePost(28)}>delete</button> */}
-
-  </>
-);
+    </>
+  );
 }

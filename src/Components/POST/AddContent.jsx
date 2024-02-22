@@ -17,33 +17,26 @@ export default function AddContent(props) {
       ...prevContent,
       content: event.target.value
     }));
-}
+  }
   return (
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '30ch' ,direction:'rtl',marginRight:'15%'},
+        '& .MuiTextField-root': { m: 1, width: '30ch', direction: 'rtl', marginRight: '15%' },
       }}
       noValidate
       autoComplete="off"
     >
-      <div style={{direction:'rtl'}}>
-        <TextField sx={{marginLeft:'15%'}}
+      <div style={{ direction: 'rtl' }}>
+        <TextField sx={{ marginLeft: '15%' }}
           id="standard-multiline-flexible"
           label="כותרת"
           multiline
           maxRows={1}
           variant="standard"
-          onChange={(e)=>handleChangeTitle(e)}
-          value={props.setMyContent.title} 
+          onChange={(e) => handleChangeTitle(e)}
+          value={props.setMyContent.title}
         />
-        {/* <TextField
-          id="standard-textarea"
-          label="Multiline Placeholder"
-          placeholder="Placeholder"
-          multiline
-          variant="standard"
-        /> */}
         <TextField
           id="standard-multiline-static"
           label="תוכן הפוסט"
@@ -51,8 +44,8 @@ export default function AddContent(props) {
           rows={4}
           defaultValue=""
           variant="standard"
-          onChange={(e)=>handleChangeContent(e)}
-          value={props.setMyContent.content} 
+          onChange={(e) => handleChangeContent(e)}
+          value={props.setMyContent.content}
         />
       </div>
     </Box>

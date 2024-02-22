@@ -202,7 +202,7 @@ export default function SignUp() {
                                             },
                                         },
                                     }}
-                                    InputLabelProps={{ 
+                                    InputLabelProps={{
                                         sx: {
                                             '&.Mui-focused': {
                                                 color: '#9400D3',
@@ -252,7 +252,7 @@ export default function SignUp() {
 
                             </Stack>
                         </Grid>
-                        
+
                         <Button
                             type="submit"
                             fullWidth

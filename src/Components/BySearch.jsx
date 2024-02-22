@@ -24,7 +24,7 @@ export default function BySearch() {
                 <p style={{ textAlign: 'center', marginBottom: '30vh', marginTop: '11vh' }}>לא נמצאו תוצאות לחיפוש: {input}</p>
             )}
 
-            <NewCard sharings={filteredSharings} type={0}/>
+            <NewCard sharings={filteredSharings} type={0} />
 
         </>
     )

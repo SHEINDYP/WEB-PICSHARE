@@ -184,7 +184,7 @@ export default function SinglePost() {
 
             {/* תמונה */}
             <CardMedia
-                sx={{ alignSelf: 'center', border: '0.02vw solid black', width: 500}}
+                sx={{ alignSelf: 'center', border: '0.02vw solid black', width: 500 }}
                 component="img"
                 image={`data:image/*;base64,${selectedSharing.image}`}
                 alt="Pic"

@@ -1,4 +1,4 @@
-import { GET_USER_BY_ID, ADD_USER, DELETE_USER, LOG_OUT_USER, CHECK_USER_BY_EMAIL,ADD_VIEWER } from "../Actions/userActions";
+import { GET_USER_BY_ID, ADD_USER, DELETE_USER, LOG_OUT_USER, CHECK_USER_BY_EMAIL, ADD_VIEWER } from "../Actions/userActions";
 
 const initialState = {
   user: {},
@@ -21,7 +21,7 @@ const userReducer = (state = initialState, action) => {
     case DELETE_USER:
       return {
         ...state,
-        user:{},
+        user: {},
       };
 
     case LOG_OUT_USER:
@@ -37,17 +37,13 @@ const userReducer = (state = initialState, action) => {
       };
 
     case ADD_VIEWER:
-      return{
+      return {
         ...state,
-        // user: {
-        //   ...state.user,
-        //   viewers: (state.user.counts[4] || 0) + 1,
-        // },
         user: {
           ...state.user,
           counts: [...state.user.counts.slice(0, 3), (state.user.counts[3] || 0) + 1, ...state.user.counts.slice(4)],
         },
-       
+
       };
 
     default:
