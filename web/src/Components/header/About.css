@@ -1,0 +1,36 @@
+.h1A{
+    text-align: center;
+    margin-top: 2vh;
+}
+
+.divA{
+    /* display: flex; */
+    /* justify-content: center; */
+    width: 98.5vw; /* גובה של העמוד */
+     height: 65vh;
+    /* align-items: center; */
+    margin-bottom: 10vh;
+    margin-top: 5vh;
+    direction: rtl;
+}
+.imgA{
+    width: 100%;
+    height: 100%;
+    /* position: absolute; */
+    opacity: 0.5; /* שקיפות חלקית של התמונה */
+}
+.pA{
+   z-index: 999;
+   position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black; /* צבע טקסט לדוגמה */
+    text-align: center; /* מרכוז את הטקסט */
+    width: 50vw; /* רוחב טקסט */
+
+    font-size: 1.5em;
+    font-weight: 900;
+
+
+}
