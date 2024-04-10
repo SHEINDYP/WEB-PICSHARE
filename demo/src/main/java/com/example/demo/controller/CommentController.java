@@ -20,8 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
-//@CrossOrigin (origins="*")
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(value = "http://localhost:5173",allowCredentials = "true")
 public class CommentController {
     private CommentRepository commentRepository;
     private SharingRepository sharingRepository;

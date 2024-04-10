@@ -2,14 +2,23 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.User;
+import com.example.demo.security.CustomUserDetails;
+import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.service.MapStructMappper;
+import com.example.demo.service.RoleRepository;
 import com.example.demo.service.UserRepository;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +38,7 @@ import java.util.Locale;
 @EnableScheduling
 @RestController   // מאפר לתת כתובת לפונקציות
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(value = "http://localhost:5173",allowCredentials = "true")
 // מסיר הבטחה משום שהשרת שלנו לא מאובטח וכך כשמסירים את ההבטחה ניתן לגשת אליו
 public class UserController {
 
@@ -44,20 +53,31 @@ public class UserController {
 
     private MapStructMappper mapper;
 
+    private JwtUtils jwtUtils;
+    // מנהל האישורים
+    AuthenticationManager authenticationManager;
+    private RoleRepository roleRepository;
+
     private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "\\images\\";
 
 
     @Autowired
-    public UserController(UserRepository userRepository, MapStructMappper mapper) {
+    public UserController(UserRepository userRepository, MapStructMappper mapper,JwtUtils jwtUtils,RoleRepository roleRepository,AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.jwtUtils = jwtUtils;
+        this.roleRepository = roleRepository;
+        this.authenticationManager=authenticationManager;
     }
 
     // הוספת משתמש חדש
-    @PostMapping("/createUser")
+    @PostMapping("/signUp")
     public ResponseEntity<User> createUser(@RequestBody User u) {
         User user = userRepository.findByEmail(u.getEmail());
         if (user == null) {
+            String pass = u.getPassword();
+            u.setPassword(new BCryptPasswordEncoder(8).encode(pass));
+            u.getRoles().add(roleRepository.findById((long) 2).get());
             User newUser = userRepository.save(u);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 
@@ -87,7 +107,10 @@ public class UserController {
 
         }
     }
-
+    @GetMapping("/dugma")
+public String getDugma(){
+        return "hello";
+}
     @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity deleteUser(@PathVariable long id) {
         try {
@@ -138,15 +161,39 @@ public class UserController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<User> check(@RequestBody User u) throws IOException {
-        User user = userRepository.findByEmail(u.getEmail());
-//        System.out.println(user);
-        if (user != null && user.getPassword().equals(u.getPassword())) {//mail & pass correct
-            return new ResponseEntity<>(user, HttpStatus.OK);//200
-        } else if (user != null) {//mail correct & pass uncorrect
-            return new ResponseEntity<>(user, HttpStatus.CREATED);//201- יחזור סטטוס לא שגיאה אבל גם לא אוקי
-        } else//mail&password uncorrect- send to Sign UP
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);//202
+    public ResponseEntity<?> signIn(@RequestBody User u) {
+
+        //מייצר טוקן
+        //מבצע בדיקה האם האימות בוצע בהצלחה
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(u.getEmail(), u.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //מחזיר את היוזר כאובייקט עטוף
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        //מחזיר עוגיה של jwt לפי פרטי המשתמש
+        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(userDetails.getUsername());
+    }
+//    public ResponseEntity<User> check(@RequestBody User u) throws IOException {
+//        User user = userRepository.findByEmail(u.getEmail());
+////        System.out.println(user);
+//        if (user != null && user.getPassword().equals(u.getPassword())) {//mail & pass correct
+//            return new ResponseEntity<>(user, HttpStatus.OK);//200
+//        } else if (user != null) {//mail correct & pass uncorrect
+//            return new ResponseEntity<>(user, HttpStatus.CREATED);//201- יחזור סטטוס לא שגיאה אבל גם לא אוקי
+//        } else//mail&password uncorrect- send to Sign UP
+//            return new ResponseEntity<>(HttpStatus.ACCEPTED);//202
+//    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<?> signOut() {
+        ResponseCookie responseCookie=jwtUtils.getCleanJwtCookie();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .body("you've been signed out");
     }
 
     ////////גרף

@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.*;
 
 import com.example.demo.model.Comment;
@@ -22,9 +24,7 @@ public class User {
     private String email;
     private String password;
     private String image;
-
     private int[] counts;
-
     @JsonIgnore
     @OneToMany(mappedBy = "user") // לכל משתמש הרבה שיתופים
     private List<Sharing> sharings;
@@ -32,6 +32,12 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user") // לכל משתמש הרבה תגובות
     private List<Comment> comments;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id"))
+    private Set<Role> roles=new HashSet<>();
 
     public User() {
 
@@ -118,7 +124,13 @@ public class User {
         this.comments = comments;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     //    public String getFirstName() {
 //        return firstName;
