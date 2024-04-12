@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 //קביעת סטטוס המשתמש, כמו חשבון פעיל או חסום.
 public class CustomUserDetails implements UserDetails {
     private User user;
+
     public CustomUserDetails(User user) {
         super();
         this.user = user;
@@ -26,9 +27,8 @@ public class CustomUserDetails implements UserDetails {
     //רשימה של הרשאות-עוברת על רשימת התפקידים
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities=new ArrayList<>();
-        for(Role role:user.getRoles())
-        {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName().name()));
         }
         return grantedAuthorities;
@@ -64,8 +64,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 
 
 }

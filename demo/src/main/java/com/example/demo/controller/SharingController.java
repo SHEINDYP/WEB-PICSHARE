@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sharings")
-@CrossOrigin(value = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(value = "http://localhost:5173", allowCredentials = "true")
 public class SharingController {
 
     private SharingRepository sharingRepository;
@@ -34,12 +34,6 @@ public class SharingController {
         this.sharingRepository = sharingRepository;
         this.mapper = mapper;
     }
-
-//    @GetMapping("/get")
-//    public List<Sharing> getSharings(){
-//        return sharingRepository.findAll();
-//        // אמורים לחזור כ json
-//    }
 
     @GetMapping("/get")
     public ResponseEntity<List<SharingDTO>> getSharings() {

@@ -20,8 +20,6 @@ public class SharingDTO {
 
         private Category category;
 
-//        private List<Comment> comments;
-
         public Long getId() {
                 return id;
         }
@@ -85,12 +83,4 @@ public class SharingDTO {
         public void setCategory(Category category) {
                 this.category = category;
         }
-
-//        public List<Comment> getComments() {
-//                return comments;
-//        }
-//
-//        public void setComments(List<Comment> comments) {
-//                this.comments = comments;
-//        }
 }

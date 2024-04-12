@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin(value = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(value = "http://localhost:5173", allowCredentials = "true")
 public class CommentController {
     private CommentRepository commentRepository;
     private SharingRepository sharingRepository;
@@ -63,10 +63,10 @@ public class CommentController {
             int sumOfScore = c.getScore();
             // עדכון דירוג פוסט עפ"י תגובות
             Sharing s = sharingRepository.findById(c.getSharing().getId()).orElse(null);
-                for (Comment comment : s.getComments()) {
-                    sumOfScore += comment.getScore();
-                }
-                s.setScore(sumOfScore / (s.getComments().size()+1));
+            for (Comment comment : s.getComments()) {
+                sumOfScore += comment.getScore();
+            }
+            s.setScore(sumOfScore / (s.getComments().size() + 1));
 
             // עדכון תאריך העלאת תגובה
             c.setDate(LocalDate.now());

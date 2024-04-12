@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.security.jwt.JwtUtils;
@@ -38,7 +37,7 @@ import java.util.Locale;
 @EnableScheduling
 @RestController   // מאפר לתת כתובת לפונקציות
 @RequestMapping("/api/user")
-@CrossOrigin(value = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(value = "http://localhost:5173", allowCredentials = "true")
 // מסיר הבטחה משום שהשרת שלנו לא מאובטח וכך כשמסירים את ההבטחה ניתן לגשת אליו
 public class UserController {
 
@@ -62,12 +61,12 @@ public class UserController {
 
 
     @Autowired
-    public UserController(UserRepository userRepository, MapStructMappper mapper,JwtUtils jwtUtils,RoleRepository roleRepository,AuthenticationManager authenticationManager) {
+    public UserController(UserRepository userRepository, MapStructMappper mapper, JwtUtils jwtUtils, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.jwtUtils = jwtUtils;
         this.roleRepository = roleRepository;
-        this.authenticationManager=authenticationManager;
+        this.authenticationManager = authenticationManager;
     }
 
     // הוספת משתמש חדש
@@ -107,10 +106,12 @@ public class UserController {
 
         }
     }
+
     @GetMapping("/dugma")
-public String getDugma(){
+    public String getDugma() {
         return "hello";
-}
+    }
+
     @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity deleteUser(@PathVariable long id) {
         try {
@@ -190,9 +191,9 @@ public String getDugma(){
 
     @PostMapping("/signout")
     public ResponseEntity<?> signOut() {
-        ResponseCookie responseCookie=jwtUtils.getCleanJwtCookie();
+        ResponseCookie responseCookie = jwtUtils.getCleanJwtCookie();
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,responseCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                 .body("you've been signed out");
     }
 
